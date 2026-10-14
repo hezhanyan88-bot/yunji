@@ -1,0 +1,773 @@
+<title>云记</title>
+<style>
+  :root{
+    --bg:#F2F3EA; --surface:#FCFBF5; --surface-2:#EAECDF;
+    --ink:#2F3527; --ink-soft:#575F4D; --muted:#8A917A; --line:#DDE0D0;
+    --accent:#5C8B63; --accent-ink:#3F6B47; --accent-soft:#E2EBDD;
+    --warm:#D08B45; --warm-soft:#F5E6D2;
+    --rose:#C97B7B; --rose-soft:#F3E0DF;
+    --shadow:0 1px 2px rgba(47,53,39,.06),0 4px 16px rgba(47,53,39,.06);
+    --font-display:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+    --font-body:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+    --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='%235C8B63' fill-opacity='0.15'%3E%3Ccircle cx='95' cy='54' r='14'/%3E%3Ccircle cx='108' cy='47' r='18'/%3E%3Ccircle cx='123' cy='55' r='12'/%3E%3Crect x='83' y='53' width='48' height='16' rx='8'/%3E%3C/g%3E%3Cg fill='%235C8B63' fill-opacity='0.10'%3E%3Ccircle cx='42' cy='124' r='9'/%3E%3Ccircle cx='52' cy='119' r='12'/%3E%3Ccircle cx='63' cy='125' r='8'/%3E%3Crect x='36' y='123' width='33' height='12' rx='6'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1E2119; --surface:#272B22; --surface-2:#2F342A;
+      --ink:#E9EBDD; --ink-soft:#C0C6AF; --muted:#8B9278; --line:#3A3F32;
+      --accent:#82B089; --accent-ink:#A7C9AC; --accent-soft:#2C3A2E;
+      --warm:#E2A65F; --warm-soft:#3A2F22;
+      --rose:#D69393; --rose-soft:#3A2A2A;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.28);
+      --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='%2382B089' fill-opacity='0.18'%3E%3Ccircle cx='95' cy='54' r='14'/%3E%3Ccircle cx='108' cy='47' r='18'/%3E%3Ccircle cx='123' cy='55' r='12'/%3E%3Crect x='83' y='53' width='48' height='16' rx='8'/%3E%3C/g%3E%3Cg fill='%2382B089' fill-opacity='0.12'%3E%3Ccircle cx='42' cy='124' r='9'/%3E%3Ccircle cx='52' cy='119' r='12'/%3E%3Ccircle cx='63' cy='125' r='8'/%3E%3Crect x='36' y='123' width='33' height='12' rx='6'/%3E%3C/g%3E%3C/svg%3E");
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1E2119; --surface:#272B22; --surface-2:#2F342A;
+    --ink:#E9EBDD; --ink-soft:#C0C6AF; --muted:#8B9278; --line:#3A3F32;
+    --accent:#82B089; --accent-ink:#A7C9AC; --accent-soft:#2C3A2E;
+    --warm:#E2A65F; --warm-soft:#3A2F22;
+    --rose:#D69393; --rose-soft:#3A2A2A;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.28);
+    --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='%2382B089' fill-opacity='0.18'%3E%3Ccircle cx='95' cy='54' r='14'/%3E%3Ccircle cx='108' cy='47' r='18'/%3E%3Ccircle cx='123' cy='55' r='12'/%3E%3Crect x='83' y='53' width='48' height='16' rx='8'/%3E%3C/g%3E%3Cg fill='%2382B089' fill-opacity='0.12'%3E%3Ccircle cx='42' cy='124' r='9'/%3E%3Ccircle cx='52' cy='119' r='12'/%3E%3Ccircle cx='63' cy='125' r='8'/%3E%3Crect x='36' y='123' width='33' height='12' rx='6'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background-color:var(--bg); color:var(--ink);
+    background-image:var(--pattern), radial-gradient(1100px 520px at 50% -120px, var(--accent-soft), transparent 72%);
+    background-repeat:repeat, no-repeat;
+    background-size:140px 140px, 100% 100%;
+    font-family:var(--font-body); font-size:16px; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{max-width:520px;margin:0 auto;padding:0 16px 92px;min-height:100dvh}
+  /* header */
+  .top{padding:22px 2px 8px}
+  .brand{font-family:var(--font-display);font-size:22px;letter-spacing:.02em;color:var(--accent-ink);display:flex;align-items:baseline;gap:8px}
+  .brand small{font-size:13px;color:var(--muted);font-family:var(--font-body);letter-spacing:.05em}
+  .greet{font-family:var(--font-display);font-size:26px;margin:14px 0 2px;text-wrap:balance}
+  .sub{color:var(--ink-soft);font-size:14px}
+  .summary{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px;color:var(--ink-soft);display:flex;flex-wrap:wrap;gap:6px 16px}
+  .summary b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  /* cards */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:14px;box-shadow:var(--shadow)}
+  .card h3{margin:0;font-size:16px;display:flex;align-items:center;gap:8px}
+  .card h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--line)}
+  .card h3 .dot.on{background:var(--accent)}
+  .card h3 .dot.warn{background:var(--warm)}
+  .card h3 .tag{margin-left:auto;font-size:11px;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);border-radius:99px;padding:2px 9px}
+  .row-label{font-size:13px;color:var(--muted);margin:14px 0 8px;letter-spacing:.03em}
+  .row-label:first-of-type{margin-top:12px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:15px;padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink-soft);cursor:pointer;user-select:none;transition:background .12s,color .12s,border-color .12s;min-height:40px}
+  .chip:active{transform:scale(.97)}
+  .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+  .chip.warn.on{background:var(--rose-soft);border-color:var(--rose);color:var(--rose)}
+  .chip.warm.on{background:var(--warm-soft);border-color:var(--warm);color:var(--warm)}
+  /* big toggle */
+  .bigrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .big{font-size:17px;padding:14px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface-2);color:var(--ink-soft);text-align:center;cursor:pointer;user-select:none;min-height:54px;font-weight:600}
+  .big.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .big.warn.on{background:var(--rose);border-color:var(--rose)}
+  /* stepper */
+  .stepper{display:flex;align-items:center;gap:0;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;width:fit-content;background:var(--surface)}
+  .stepper button{font-size:20px;width:48px;height:48px;border:none;background:transparent;color:var(--accent-ink);cursor:pointer}
+  .stepper button:active{background:var(--accent-soft)}
+  .stepper .val{min-width:74px;text-align:center;font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
+  .stepper .unit{font-size:12px;color:var(--muted);font-weight:400;margin-left:2px}
+  .stepper-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:4px}
+  .stepper-row .hint{font-size:13px;color:var(--muted)}
+  /* section nav */
+  main section{display:none}
+  main section.active{display:block;animation:fade .18s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+  /* tabbar */
+  .tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:20}
+  .tab{background:none;border:none;padding:8px 4px 6px;color:var(--muted);font-size:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;border-radius:12px}
+  .tab .ico{font-size:20px;line-height:1}
+  .tab.on{color:var(--accent-ink);background:var(--accent-soft)}
+  /* trends */
+  .stat-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+  .tile{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center}
+  .tile .n{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;font-family:var(--font-display)}
+  .tile .n small{font-size:13px;font-weight:400;color:var(--muted)}
+  .tile .l{font-size:12px;color:var(--muted);margin-top:2px}
+  .chart-card{margin-top:14px}
+  .chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
+  .chart-head .t{font-size:15px;font-weight:600}
+  .chart-head .unit{font-size:12px;color:var(--muted)}
+  .bars{display:flex;align-items:flex-end;gap:8px;height:120px;padding-top:6px}
+  .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+  .bar-track{width:100%;max-width:30px;height:100%;display:flex;align-items:flex-end;background:var(--surface-2);border-radius:6px}
+  .bar-fill{width:100%;border-radius:6px;background:var(--accent);min-height:3px;transition:height .3s ease}
+  .bar-fill.warm{background:var(--warm)}
+  .bar-fill.zero{background:transparent}
+  .bar-lbl{font-size:11px;color:var(--muted)}
+  .bar-val{font-size:11px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .chart-note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5}
+  /* assistant */
+  .assistant-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--accent-ink);background:var(--accent-soft);border-radius:99px;padding:4px 10px}
+  .assistant-badge.on{color:#fff;background:var(--accent)}
+  .ai-settings{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+  .ai-settings summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--ink-soft);user-select:none}
+  .ai-settings input{width:100%;font-size:15px;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface-2);color:var(--ink);font-family:var(--font-body);margin-top:10px}
+  .ai-settings input:focus{outline:none;border-color:var(--accent)}
+  .chat{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .msg{max-width:86%;padding:11px 14px;border-radius:16px;font-size:15px;white-space:pre-wrap;word-break:break-word}
+  .msg.assistant{background:var(--surface);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:6px}
+  .msg.user{background:var(--accent);color:#fff;align-self:flex-end;border-bottom-right-radius:6px}
+  .quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .inputrow{position:sticky;bottom:70px;display:flex;gap:8px;margin-top:14px;background:var(--bg);padding:6px 0}
+  .inputrow input{flex:1;font-size:16px;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);font-family:var(--font-body)}
+  .inputrow input:focus{outline:none;border-color:var(--accent)}
+  .inputrow button{font-size:15px;font-weight:600;padding:0 18px;border:none;border-radius:14px;background:var(--accent);color:#fff;cursor:pointer;min-height:48px}
+  /* comfort */
+  .affirm{background:linear-gradient(160deg,var(--accent-soft),var(--warm-soft));border:1px solid var(--line);border-radius:18px;padding:22px 18px;margin-top:14px;text-align:center}
+  .affirm .q{font-family:var(--font-display);font-size:19px;line-height:1.7;color:var(--ink);text-wrap:balance}
+  .affirm .by{margin-top:10px;font-size:12px;color:var(--muted)}
+  .secretnote{margin-top:14px}
+  .secretnote textarea{width:100%;font-size:16px;padding:12px;border:1.5px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);font-family:var(--font-body);resize:vertical;min-height:84px}
+  .secretnote .shown{margin-top:10px;font-family:var(--font-display);font-size:16px;color:var(--accent-ink);background:var(--accent-soft);border-radius:12px;padding:14px;line-height:1.7}
+  .btn{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:600;padding:11px 18px;border-radius:999px;border:1.5px solid var(--accent);background:transparent;color:var(--accent-ink);cursor:pointer;min-height:44px}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn.ghost{border-color:var(--line);color:var(--ink-soft)}
+  /* toast */
+  #toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:40}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .note{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:10px}
+  [hidden]{display:none!important}
+  .guide-btn{margin-left:auto;font-size:12px;color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--line);border-radius:999px;padding:4px 10px;cursor:pointer}
+  .custom-row{display:flex;gap:8px;margin-top:12px}
+  .custom-row input{flex:1;font-size:15px;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font-family:var(--font-body)}
+  .custom-row input:focus{outline:none;border-color:var(--accent)}
+  .custom-row button{font-size:14px;font-weight:600;padding:0 16px;border:none;border-radius:12px;background:var(--accent);color:#fff;cursor:pointer}
+  .modal{position:fixed;inset:0;background:rgba(30,33,25,.45);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .modal-box{background:var(--surface);border:1px solid var(--line);border-radius:20px;max-width:400px;width:100%;padding:22px 20px;box-shadow:0 12px 40px rgba(0,0,0,.25);max-height:86dvh;overflow:auto}
+  .modal-box h2{margin:0 0 6px;font-family:var(--font-display);font-size:20px}
+  .modal-box .lead{font-size:13px;color:var(--muted);margin:0 0 14px}
+  .guide-item{display:flex;gap:10px;margin:14px 0;align-items:flex-start}
+  .guide-item .ico{font-size:20px;line-height:1.25}
+  .guide-item b{display:block;font-size:15px}
+  .guide-item p{margin:2px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+  .modal-box .btn{width:100%;justify-content:center;margin-top:6px}
+  .ai-settings textarea{width:100%;font-size:15px;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface-2);color:var(--ink);font-family:var(--font-body);resize:vertical;min-height:84px;margin-top:10px}
+  .ai-settings textarea:focus{outline:none;border-color:var(--accent)}
+  .shown{margin-top:10px;font-family:var(--font-display);font-size:16px;color:var(--accent-ink);background:var(--accent-soft);border-radius:12px;padding:14px;line-height:1.7}
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">云记 <small>给妈妈的每日关怀</small><button class="guide-btn" id="guide-open" type="button">❓ 指南</button></div>
+    <div class="greet" id="greet">您好</div>
+    <div class="sub" id="dateLine">今天</div>
+    <div class="summary" id="summary"></div>
+  </header>
+
+  <main>
+    <!-- 记录 -->
+    <section data-tab="log" class="active">
+      <div class="card" id="bowel-card">
+        <h3>🚽 通便情况 <span class="dot" id="bowel-dot"></span></h3>
+        <div class="bigrow">
+          <div class="big" data-act="toggle" data-path="bowel.has">排便了 ✓</div>
+          <div class="big warn" data-act="toggle" data-path="bowel.has">还没有</div>
+        </div>
+        <div id="bowel-detail"></div>
+      </div>
+
+      <div class="card" id="diet-card">
+        <h3>🥣 饮食 <span class="dot" id="diet-dot"></span></h3>
+        <div class="row-label">今天喝了多少水</div>
+        <div class="stepper-row">
+          <div class="stepper">
+            <button data-act="step" data-path="diet.water" data-delta="-200" data-min="0" data-max="4000">−</button>
+            <div class="val"><span id="water-val">0</span><span class="unit">ml</span></div>
+            <button data-act="step" data-path="diet.water" data-delta="200" data-min="0" data-max="4000">＋</button>
+          </div>
+          <div class="chips">
+            <div class="chip" data-act="water" data-val="700">偏少</div>
+            <div class="chip" data-act="water" data-val="1500">正常</div>
+            <div class="chip" data-act="water" data-val="2200">充足</div>
+          </div>
+        </div>
+        <div class="row-label">今天吃了什么（点选）</div>
+        <div id="food-groups"></div>
+        <div class="custom-row">
+          <input id="food-custom" type="text" placeholder="自己写一个，如「南瓜汤」，回车添加" />
+          <button id="food-add" type="button">添加</button>
+        </div>
+      </div>
+
+      <div class="card" id="sleep-card">
+        <h3>😴 睡眠 <span class="dot" id="sleep-dot"></span></h3>
+        <div class="row-label">昨晚几点睡</div>
+        <div class="chips" data-group="bed"></div>
+        <div class="row-label">今早几点醒</div>
+        <div class="chips" data-group="wake"></div>
+        <div class="row-label">睡得怎么样</div>
+        <div class="chips" data-group="quality"></div>
+        <div class="row-label">夜里醒了几次</div>
+        <div class="stepper-row">
+          <div class="stepper">
+            <button data-act="step" data-path="sleep.wakes" data-delta="-1" data-min="0" data-max="8">−</button>
+            <div class="val"><span id="wakes-val">0</span><span class="unit">次</span></div>
+            <button data-act="step" data-path="sleep.wakes" data-delta="1" data-min="0" data-max="8">＋</button>
+          </div>
+          <span class="hint" id="sleep-hint"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>😊 今天心情 <span class="dot" id="mood-dot"></span></h3>
+        <div class="chips" data-group="mood" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- 趋势 -->
+    <section data-tab="trends">
+      <div class="stat-tiles">
+        <div class="tile"><div class="n" id="t-streak">0<small>天</small></div><div class="l">连续排便</div></div>
+        <div class="tile"><div class="n" id="t-bm">0<small>天</small></div><div class="l">近7天排便</div></div>
+        <div class="tile"><div class="n" id="t-sleep">—</div><div class="l">平均睡眠</div></div>
+      </div>
+      <div class="card chart-card">
+        <div class="chart-head"><span class="t">近 7 天排便次数</span><span class="unit">次 / 天</span></div>
+        <div class="bars" id="chart-bm"></div>
+        <div class="chart-note" id="note-bm"></div>
+      </div>
+      <div class="card chart-card">
+        <div class="chart-head"><span class="t">近 7 天睡眠时长</span><span class="unit">小时</span></div>
+        <div class="bars" id="chart-sleep"></div>
+        <div class="chart-note" id="note-sleep"></div>
+      </div>
+      <div class="card chart-card">
+        <div class="chart-head"><span class="t">近 7 天饮水量</span><span class="unit">ml</span></div>
+        <div class="bars" id="chart-water"></div>
+        <div class="chart-note" id="note-water"></div>
+      </div>
+    </section>
+
+    <!-- 助手 -->
+    <section data-tab="assistant">
+      <div style="margin-top:14px"><span class="assistant-badge" id="ai-badge">🌿 本地智能模式 · 未接入 AI</span></div>
+      <details class="ai-settings">
+        <summary>🔑 AI 接入设置（可选）</summary>
+        <div class="row-label" style="margin-top:10px">粘贴 DeepSeek API Key，仅保存在本机浏览器</div>
+        <input id="api-key" type="password" autocomplete="off" placeholder="sk-..." />
+        <div class="note">密钥只存在你本机浏览器里，不会写进页面代码。填好后助手即接入真实 AI；填错或不填则用本地建议。</div>
+      </details>
+      <details class="ai-settings" style="margin-top:12px">
+        <summary>👤 妈妈档案（喂给 AI 的资料）</summary>
+        <div class="row-label" style="margin-top:10px">写下妈妈的年龄、体质、病史、饮食禁忌、口味、作息等，AI 的建议会更贴合她</div>
+        <textarea id="profile-input" placeholder="例如：68岁，偏阳虚、怕冷；有高血压需少盐；喜清淡、不喜甜；入睡较晚……"></textarea>
+        <div class="note">这段会作为「妈妈的基本情况」发给 AI。只存本机浏览器，不会写进页面代码。</div>
+      </details>
+      <div class="affirm">
+        <div class="q" id="affirm-q"></div>
+        <div class="by" id="affirm-by"></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn ghost" id="affirm-next">换一句暖心话</button>
+        <button class="btn ghost" id="affirm-mood">按心情安慰我</button>
+      </div>
+      <div class="chat" id="chat"></div>
+      <div class="quick" id="quick-chips"></div>
+      <div class="inputrow">
+        <input id="chat-input" type="text" placeholder="问一问助手，比如「便秘怎么办」" />
+        <button id="chat-send">发送</button>
+      </div>
+      <details class="ai-settings" style="margin-top:14px">
+        <summary>💌 给妈妈的一句悄悄话</summary>
+        <textarea id="secret-input" placeholder="例如：妈，您健康快乐就是我们最大的心愿。"></textarea>
+        <div class="shown" id="secret-shown" hidden></div>
+      </details>
+    </section>
+
+  </main>
+
+  <nav class="tabbar" id="tabbar">
+    <button class="tab on" data-tab="log"><span class="ico">📝</span>记录</button>
+    <button class="tab" data-tab="trends"><span class="ico">📊</span>趋势</button>
+    <button class="tab" data-tab="assistant"><span class="ico">🌿</span>助手</button>
+  </nav>
+</div>
+
+<div class="modal" id="guide" hidden>
+  <div class="modal-box">
+    <h2>使用指南</h2>
+    <p class="lead">3 分钟看懂「云记」怎么用</p>
+    <div class="guide-item"><span class="ico">📝</span><div><b>记录</b><p>每天点几下：排便、饮食、饮水、睡眠、心情，点完自动保存。</p></div></div>
+    <div class="guide-item"><span class="ico">🍚</span><div><b>饮食可以自己写</b><p>除了点选，还能在「今天吃了什么」下方自己输入，如「南瓜汤」，回车添加。</p></div></div>
+    <div class="guide-item"><span class="ico">📊</span><div><b>趋势</b><p>看最近 7 天的排便、睡眠、饮水变化，心里有数。</p></div></div>
+    <div class="guide-item"><span class="ico">🌿</span><div><b>助手</b><p>专属养生助手，根据记录给饮食/睡眠/中医调理建议；点「🔑 AI 接入设置」填 key 后变成真正的 AI。</p></div></div>
+    <div class="guide-item"><span class="ico">💾</span><div><b>数据</b><p>只存在本机浏览器里，不联网、不泄露，换设备不互通。</p></div></div>
+    <button class="btn primary" id="guide-close">开始使用</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = s => document.querySelector(s);
+  const KEY_R = "nuanchao.records", KEY_S = "nuanchao.settings", KEY_C = "nuanchao.chat", KEY_NOTE = "nuanchao.secret";
+
+  function load(key, fallback){ try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }catch(e){ return fallback; } }
+  function store(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+
+  function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+  function dateAddDays(str, delta){ const [y,m,d]=str.split("-").map(Number); const dt=new Date(y,m-1,d); dt.setDate(dt.getDate()+delta); return dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0"); }
+  const WD=["日","一","二","三","四","五","六"];
+  function weekday(str){ const [y,m,d]=str.split("-").map(Number); return WD[new Date(y,m-1,d).getDay()]; }
+
+  let records = load(KEY_R, {});
+  let settings = load(KEY_S, { name: "妈妈", waterGoal: 1500, apiKey: "", profile: "" });
+  let chat = load(KEY_C, []);
+
+  function getRecord(date){ return records[date] || (records[date] = { bowel:{has:null,times:0,shape:null,effort:null,belly:null,time:null}, diet:{water:0,foods:[]}, sleep:{bed:null,wake:null,quality:null,wakes:0}, mood:null }); }
+  function saveRecords(){ store(KEY_R, records); }
+  function getPath(o,p){ return p.split(".").reduce((a,k)=>a?.[k], o); }
+  function setPath(o,p,v){ const ks=p.split("."); let c=o; for(let i=0;i<ks.length-1;i++){ c=c[ks[i]] ??= {}; } c[ks[ks.length-1]]=v; }
+
+  /* ---------- 选项 ---------- */
+  const SHAPE = { normal:"正常", dry:"偏干硬", loose:"偏稀", unformed:"不成形" };
+  const EFFORT = { smooth:"顺畅", strained:"有点费力", hard:"很费力" };
+  const BELLY = { none:"无不适", bloat:"腹胀", pain:"腹痛" };
+  const BTIME = { morning:"早上", noon:"中午", evening:"晚上", night:"夜间" };
+  const BED = { "21:00":"21点", "22:00":"22点", "23:00":"23点", "24:00":"更晚" };
+  const WAKE = { "05:00":"5点", "06:00":"6点", "07:00":"7点", "08:00":"更晚" };
+  const QUALITY = { good:"睡得好", ok:"一般", poor:"没睡好" };
+  const MOOD = { happy:"开心", calm:"平静", annoyed:"有点烦", unwell:"不舒服" };
+  const FOOD_GROUPS = [
+    { label:"主食", items:["米饭","粥","面条","馒头","杂粮","红薯"] },
+    { label:"蛋白质", items:["鸡蛋","鱼","肉","豆腐","牛奶","豆浆"] },
+    { label:"蔬菜", items:["绿叶菜","白菜","西兰花","胡萝卜","菌菇"] },
+    { label:"水果", items:["香蕉","火龙果","苹果","梨","西梅"] },
+    { label:"其他", items:["油腻","辛辣","甜食","生冷","坚果"] },
+  ];
+
+  function chipGroup(container, opts, path, selected, cls){
+    let html = "";
+    for(const [v,label] of Object.entries(opts)){
+      const on = selected === v ? " on" : "";
+      html += '<div class="chip'+cls+on+'" data-act="single" data-path="'+path+'" data-val="'+v+'">'+label+'</div>';
+    }
+    container.innerHTML = html;
+  }
+
+  /* ---------- 记录渲染 ---------- */
+  function renderLog(){
+    const rec = getRecord(todayStr());
+    // 排便 toggle
+    const has = rec.bowel.has;
+    document.querySelectorAll('[data-act="toggle"]').forEach(b => {
+      const on = b.dataset.path === "bowel.has" && ((has===true && !b.classList.contains("warn")) || (has===false && b.classList.contains("warn")));
+      b.classList.toggle("on", on);
+    });
+    $("#bowel-dot").className = "dot" + (has ? " on" : (has===false ? " warn" : ""));
+    // 排便详情
+    let d = "";
+    if(has){
+      d += '<div class="row-label">次数</div><div class="stepper"><button data-act="step" data-path="bowel.times" data-delta="-1" data-min="0" data-max="6">−</button><div class="val">'+rec.bowel.times+'<span class="unit">次</span></div><button data-act="step" data-path="bowel.times" data-delta="1" data-min="0" data-max="6">＋</button></div>';
+      d += '<div class="row-label">性状</div><div class="chips"></div>';
+      d += '<div class="row-label">顺畅程度</div><div class="chips"></div>';
+      d += '<div class="row-label">腹部感觉</div><div class="chips"></div>';
+      d += '<div class="row-label">时间</div><div class="chips"></div>';
+    } else if(has===false){
+      d = '<div class="note">别着急，多喝温水、吃点火龙果，下午或晚上再留意一下就好。</div>';
+    }
+    $("#bowel-detail").innerHTML = d;
+    if(has){
+      const chips = $("#bowel-detail").querySelectorAll(".chips");
+      chipGroup(chips[0], SHAPE, "bowel.shape", rec.bowel.shape, "");
+      chipGroup(chips[1], EFFORT, "bowel.effort", rec.bowel.effort, "");
+      chipGroup(chips[2], BELLY, "bowel.belly", rec.bowel.belly, " warn");
+      chipGroup(chips[3], BTIME, "bowel.time", rec.bowel.time, "");
+    }
+    // 饮水
+    $("#water-val").textContent = rec.diet.water || 0;
+    $("#diet-dot").className = "dot" + ((rec.diet.water||0)>0 ? " on" : "");
+    document.querySelectorAll('[data-act="water"]').forEach(c => c.classList.toggle("on", rec.diet.water === +c.dataset.val));
+    // 食物
+    let fh = "";
+    for(const g of FOOD_GROUPS){
+      fh += '<div class="row-label">'+g.label+'</div><div class="chips">';
+      for(const item of g.items){
+        const on = (rec.diet.foods||[]).includes(item) ? " on" : "";
+        fh += '<div class="chip'+on+'" data-act="multi" data-val="'+item+'">'+item+'</div>';
+      }
+      fh += "</div>";
+    }
+    const presetSet = new Set(FOOD_GROUPS.flatMap(g=>g.items));
+    const custom = (rec.diet.foods||[]).filter(f=>!presetSet.has(f));
+    if(custom.length){
+      fh += '<div class="row-label">自己写的</div><div class="chips">';
+      for(const c of custom){
+        fh += '<div class="chip on" data-act="multi" data-val="'+escapeHtml(c)+'">'+escapeHtml(c)+'</div>';
+      }
+      fh += "</div>";
+    }
+    $("#food-groups").innerHTML = fh;
+    // 睡眠
+    chipGroup(document.querySelector('[data-group="bed"]'), BED, "sleep.bed", rec.sleep.bed, "");
+    chipGroup(document.querySelector('[data-group="wake"]'), WAKE, "sleep.wake", rec.sleep.wake, "");
+    chipGroup(document.querySelector('[data-group="quality"]'), QUALITY, "sleep.quality", rec.sleep.quality, "");
+    $("#wakes-val").textContent = rec.sleep.wakes || 0;
+    $("#sleep-dot").className = "dot" + (rec.sleep.bed ? " on" : "");
+    const sh = sleepHours(rec);
+    $("#sleep-hint").textContent = sh ? ("约 " + sh + " 小时") : "";
+    // 心情
+    chipGroup(document.querySelector('[data-group="mood"]'), MOOD, "mood", rec.mood, " warm");
+    $("#mood-dot").className = "dot" + (rec.mood ? " on" : "");
+    renderSummary();
+  }
+
+  function renderSummary(){
+    const rec = getRecord(todayStr());
+    const parts = [];
+    if(rec.bowel.has){ parts.push("排便 "+rec.bowel.times+" 次"); }
+    else if(rec.bowel.has===false){ parts.push("排便 暂无"); }
+    if(rec.diet.water) parts.push("饮水 "+rec.diet.water+"ml");
+    const sh = sleepHours(rec); if(sh) parts.push("睡眠 "+sh+"h");
+    if(rec.mood) parts.push(MOOD[rec.mood]);
+    const s = parts.length ? parts.join(" · ") : "今天还没记录，点下面的按钮开始吧";
+    $("#summary").innerHTML = '<b>今日</b><span>'+s+'</span>';
+  }
+
+  function sleepHours(rec){
+    const s = rec.sleep||{}; if(!s.bed || !s.wake) return null;
+    const [bh,bm] = s.bed.split(":").map(Number), [wh,wm] = s.wake.split(":").map(Number);
+    let m = (wh*60+wm)-(bh*60+bm); if(m<=0) m+=24*60;
+    return Math.round(m/6)/10;
+  }
+
+  /* ---------- 记录交互 ---------- */
+  $("#bowel-card").addEventListener("click", onLogClick);
+  $("#diet-card").addEventListener("click", onLogClick);
+  $("#sleep-card").addEventListener("click", onLogClick);
+  document.querySelector('[data-tab="log"]').addEventListener("click", function(e){
+    if(e.target.closest('[data-group="mood"]') || e.target.closest('.card') && !e.target.closest('[data-act]')) return;
+  });
+
+  function onLogClick(e){
+    const t = e.target.closest("[data-act]"); if(!t) return;
+    const rec = getRecord(todayStr());
+    const act = t.dataset.act;
+    if(act === "toggle"){
+      const cur = getPath(rec, t.dataset.path);
+      setPath(rec, t.dataset.path, !cur);
+      if(t.dataset.path === "bowel.has" && getPath(rec,"bowel.has") && !rec.bowel.times) rec.bowel.times = 1;
+    } else if(act === "single"){
+      const cur = getPath(rec, t.dataset.path);
+      setPath(rec, t.dataset.path, cur === t.dataset.val ? null : t.dataset.val);
+    } else if(act === "multi"){
+      const arr = rec.diet.foods || []; const v = t.dataset.val;
+      const i = arr.indexOf(v); i>=0 ? arr.splice(i,1) : arr.push(v); rec.diet.foods = arr;
+    } else if(act === "step"){
+      const d = +t.dataset.delta, mn = +t.dataset.min||0, mx = +t.dataset.max;
+      setPath(rec, t.dataset.path, Math.max(mn, Math.min(mx, (+getPath(rec,t.dataset.path)||0)+d)));
+    } else if(act === "water"){
+      rec.diet.water = +t.dataset.val;
+    }
+    saveRecords(); renderLog(); renderTrends(); refreshDailyMsg();
+    toast("已记录 ✓");
+  }
+
+  /* ---------- 趋势 ---------- */
+  function renderTrends(){
+    const days = []; for(let i=6;i>=0;i--) days.push(dateAddDays(todayStr(), -i));
+    const bm = days.map(d => { const r = getRecord(d); return r.bowel.has ? (r.bowel.times||1) : 0; });
+    const sl = days.map(d => sleepHours(getRecord(d)));
+    const wt = days.map(d => getRecord(d).diet.water || 0);
+
+    let streak = 0;
+    for(let i=0;;i++){ const r = getRecord(dateAddDays(todayStr(), -i)); if(r.bowel.has) streak++; else break; }
+    $("#t-streak").innerHTML = streak + "<small>天</small>";
+    const bmDays = bm.filter(v=>v>0).length;
+    $("#t-bm").innerHTML = bmDays + "<small>天</small>";
+    const avg = sl.filter(v=>v!=null);
+    $("#t-sleep").textContent = avg.length ? (avg.reduce((a,b)=>a+b,0)/avg.length).toFixed(1) : "—";
+
+    renderBars("#chart-bm", days, bm, 3, false, "次");
+    renderBars("#chart-sleep", days, sl.map(v=>v??0), 10, true, "h");
+    renderBars("#chart-water", days, wt, 2500, false, "ml");
+    $("#note-bm").textContent = "近7天共排便 "+bmDays+" 天" + (bmDays>=6 ? "，非常规律，继续保持。" : bmDays>=4 ? "，总体不错。" : "，建议多喝水和吃粗纤维。");
+    const avgW = wt.reduce((a,b)=>a+b,0)/7;
+    $("#note-water").textContent = "日均饮水约 "+Math.round(avgW)+" ml" + (avgW>=1500 ? "，达标了 👍" : "，离 1500ml 目标还差一点。");
+  }
+
+  function renderBars(sel, days, values, max, warm, unit){
+    const el = $(sel); let h = "";
+    const maxV = Math.max(max, ...values, 1);
+    for(let i=0;i<days.length;i++){
+      const v = values[i]; const isToday = i===days.length-1;
+      const pct = v>0 ? Math.max(8, Math.round(v/maxV*100)) : 0;
+      const fillCls = v>0 ? (warm?"warm":"") : "zero";
+      h += '<div class="bar-col" title="'+weekday(days[i])+' '+days[i].slice(5)+'：'+v+' '+unit+'">'
+         + '<div class="bar-val">'+(v>0?v:'')+'</div>'
+         + '<div class="bar-track"><div class="bar-fill '+fillCls+'" style="height:'+pct+'%"></div></div>'
+         + '<div class="bar-lbl">'+(isToday?'今天':'周'+weekday(days[i]))+'</div></div>';
+    }
+    el.innerHTML = h;
+  }
+
+  /* ---------- 助手 ---------- */
+  const QUICK = [["生成今日方案","请根据我最近的记录，给我今天完整的饮食、睡眠和排便调理建议。"],["便秘怎么办","便秘"],["睡眠不好怎么办","睡眠"],["给我一句鼓励","鼓励"]];
+
+  function moodReply(mood){
+    return ({ happy:"看到您开心，我们也跟着开心，愿您天天都有好心情！",
+      calm:"平静也是一种福气，愿您心里安稳、身体舒坦。",
+      annoyed:"别往心里去，天大的事都有我们呢。深呼吸，喝口温水。",
+      unwell:"哪里不舒服一定要告诉我们。先好好休息，其他都先放一放。" })[mood] || "";
+  }
+
+  function buildTodayAdvice(rec){
+    const b = rec.bowel||{}, d = rec.diet||{}, s = rec.sleep||{};
+    const out = [];
+    if(!b.has){
+      const y = getRecord(dateAddDays(todayStr(), -1));
+      if(y.bowel && y.bowel.has){
+        out.push("今天还没有排便，别着急。下午多喝温水、吃点火龙果，晚上顺时针揉揉肚子，顺其自然就好。");
+      } else {
+        out.push("已经两天没有排便了，要多留意。今天可以这样调理：");
+        out.push("· 喝够温水（1500–2000ml），早晨可空腹喝一杯温蜂蜜水");
+        out.push("· 吃些火龙果、西梅、香蕉、燕麦或黑芝麻糊");
+        out.push("· 早餐后固定时间如厕，即使没便意也坐 3 分钟");
+        out.push("· 顺时针轻揉腹部 5 分钟，按肚脐旁两指的「天枢穴」各 3 分钟");
+        out.push("· 少吃辛辣、油炸，避免久坐");
+      }
+    } else if(b.effort==="strained" || b.effort==="hard" || b.shape==="dry"){
+      out.push("排便有些费力、偏干。建议：多喝水、多吃绿叶菜和粗粮（燕麦、红薯）；黑芝麻糊、核桃、蜂蜜水可润肠；养成固定时间如厕的习惯，有便意别憋着。");
+    } else if(b.shape==="loose" || b.shape==="unformed"){
+      out.push("便便偏稀，注意腹部保暖，饮食清淡好消化，可喝山药小米粥，少吃生冷、油腻。");
+    } else {
+      out.push("排便很规律，非常好！继续保持这个好习惯。");
+    }
+    const w = d.water||0;
+    if(w>0 && w<800) out.push("今天喝水偏少，记得小口多次喝够 1500ml 温水。");
+    if(s.quality==="poor" || (s.wakes && s.wakes>=2)){
+      out.push("睡眠需要多照顾：睡前 1 小时温水泡脚 15 分钟；少看手机、卧室安静避光；可喝杯温牛奶，或用酸枣仁、百合、莲子煮粥安神。");
+    } else if(s.quality==="good"){
+      out.push("睡得不错，继续保持规律作息，身体会更舒服。");
+    }
+    if(rec.mood==="annoyed" || rec.mood==="unwell") out.push(moodReply(rec.mood));
+    if(out.length === 1 && (b.has && b.shape==="normal" && !d.water && s.quality!=="poor")){
+      out.push("今天整体状态很不错，保持轻松的心情，就是最好的养生。");
+    }
+    return out.join("\n");
+  }
+
+  function localAssistant(text){
+    const rec = getRecord(todayStr());
+    const t = (text||"").toLowerCase();
+    if(/便秘|拉不出|排便|大便|通便|腹胀|肚子胀/.test(t)){
+      return "关于排便，可以从这几个方面入手：\n· 多喝水，每天 1500–2000ml 温水\n· 多吃火龙果、西梅、香蕉、燕麦、绿叶菜\n· 黑芝麻糊、核桃、蜂蜜水有润肠作用\n· 固定时间如厕，有便意别憋\n· 顺时针揉腹 + 按「天枢穴」各 3 分钟\n如果持续 3 天以上没排便或腹痛明显，建议及时看医生。";
+    }
+    if(/睡|失眠|半夜醒|夜醒|困|熬夜/.test(t)){
+      return "改善睡眠的小建议：\n· 睡前 1 小时温水泡脚 15 分钟\n· 少看手机，卧室安静、避光、温度适宜\n· 喝杯温牛奶，或用酸枣仁、百合、莲子煮粥安神\n· 白天适当活动，但睡前别太兴奋\n· 尽量固定作息，同一时间上床、起床";
+    }
+    if(/吃|饮食|胃|胃口|食欲|营养|喝/.test(t)){
+      return "饮食上记住几个原则：\n· 清淡、温热、易消化，少油腻少生冷\n· 每餐有蔬菜，主食粗细搭配\n· 每天喝够 1500ml 温水，小口多次\n· 规律三餐，细嚼慢咽，七分饱\n多吃当季蔬果，营养均衡最重要。";
+    }
+    if(/水|口渴/.test(t)){
+      return "喝水很重要，尤其是对排便和睡眠都有帮助。建议每天 1500–2000ml 温水，小口多次，别等口渴才喝。可以在床头、餐桌放一杯水提醒自己。";
+    }
+    if(/累|乏力|没劲|气虚|疲劳/.test(t)){
+      return "感觉累的时候，先保证休息和规律饮食。中医讲“气不足则乏力”，可以适量吃些山药、红枣、小米、鸡蛋补气养脾胃；白天晒晒太阳、散散步，循序渐进地活动。若持续乏力，建议让医生看看。";
+    }
+    if(/心情|难过|烦|焦虑|不安|孤独|安慰|鼓励|夸/.test(t)){
+      return "您已经做得很好了。身体的小问题我们一点点调理，别给自己太大压力。累了就歇一歇，想说话就随时跟我们说，我们一直都在。您健康快乐，就是我们最大的心愿。";
+    }
+    if(/谢谢|感谢|真好/.test(t)){
+      return "不客气呀，能帮到您我也很开心。记得多喝水、按时吃饭、好好休息，我们明天继续。";
+    }
+    return "我先根据您今天的记录看看：\n\n" + buildTodayAdvice(rec);
+  }
+
+  function pushMsg(role, text, opts){
+    chat.push({ role, text, ts: Date.now(), ...(opts||{}) });
+    if(chat.length > 60) chat = chat.slice(-60);
+    store(KEY_C, chat);
+    renderAssistant();
+  }
+
+  function refreshDailyMsg(){
+    const first = chat.find(m => m.daily);
+    if(first){ first.text = buildTodayAdvice(getRecord(todayStr())); store(KEY_C, chat); renderAssistant(); }
+  }
+
+  function renderAssistant(){
+    const el = $("#chat");
+    if(!chat.length){
+      chat.push({ role:"assistant", daily:true, text: buildTodayAdvice(getRecord(todayStr())) });
+      store(KEY_C, chat);
+    }
+    el.innerHTML = chat.map(m => '<div class="msg '+m.role+'">'+escapeHtml(m.text)+'</div>').join("");
+    el.scrollTop = el.scrollHeight;
+    const qc = $("#quick-chips");
+    qc.innerHTML = QUICK.map(q => '<div class="chip" data-q="'+q[1]+'">'+q[0]+'</div>').join("");
+  }
+
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  const SYSTEM_PROMPT = "你是一位温暖、耐心的专属健康与中医养生助手，服务对象是一位上了年纪的妈妈。语气要像孝顺的儿女一样亲切，用通俗易懂的大白话，少用术语，句子简短。\n\n你的职责：根据妈妈的排便、饮食、饮水、睡眠、心情记录，给出个性化、温和的饮食/睡眠/中医调理建议；结合中医养生常识（润肠通便、安神助眠、情志调养、穴位按摩等），用生活化的语言表达；多鼓励、多安抚，给足情绪价值。\n\n重要原则：你提供的是日常调理建议，不能替代医生。若出现持续多日便秘、剧烈腹痛、便血、长期失眠等，务必提醒及时就医。建议要具体可执行，一次聚焦 2–3 条，回答控制在 150 字以内，用换行分点。";
+
+  function hasKey(){ return !!(settings.apiKey && settings.apiKey.trim()); }
+
+  function buildContext(){
+    const days=[]; for(let i=6;i>=0;i--) days.push(dateAddDays(todayStr(), -i));
+    let s = "妈妈最近7天的记录：\n";
+    for(const d of days){
+      const r = getRecord(d);
+      const bm = r.bowel.has ? r.bowel.times+"次"+(r.bowel.shape?"（"+SHAPE[r.bowel.shape]+"）":"") : "未排";
+      const sl = sleepHours(r);
+      s += "周"+weekday(d)+"：排便"+bm+"；饮水"+(r.diet.water||0)+"ml；睡眠"+(sl!=null?sl+"h":"未记")+(r.sleep.quality?"（"+QUALITY[r.sleep.quality]+"）":"")+(r.mood?"；心情"+MOOD[r.mood]:"")+"\n";
+    }
+    return s;
+  }
+
+  async function callAI(text){
+    const key = settings.apiKey.trim();
+    const profile = (settings.profile || "").trim();
+    const sys = SYSTEM_PROMPT + (profile ? "\n\n【妈妈的基本情况档案】（家人提供）\n" + profile + "\n（请据此给出更贴合她本人的建议；涉及疾病或用药要谨慎，并提醒必要时就医）" : "");
+    const messages = [
+      { role:"system", content: sys },
+      { role:"user", content: buildContext() + "\n\n妈妈现在想了解：" + text }
+    ];
+    try{
+      const res = await fetch("https://api.deepseek.com/chat/completions", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json", "Authorization":"Bearer "+key },
+        body: JSON.stringify({ model:"deepseek-chat", messages, temperature:0.7, max_tokens:700, stream:false })
+      });
+      if(!res.ok){
+        if(res.status===401 || res.status===403) return "🔑 AI 密钥似乎无效，请检查后重试。以下先给本地建议：\n\n"+localAssistant(text);
+        throw new Error("HTTP "+res.status);
+      }
+      const data = await res.json();
+      const reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+      return reply ? reply.trim() : localAssistant(text);
+    }catch(e){
+      return "🌐 网络或跨域限制，暂时用本地建议：\n\n"+localAssistant(text);
+    }
+  }
+
+  function ask(text){
+    pushMsg("user", text);
+    if(hasKey()){
+      pushMsg("assistant", "正在为您思考…");
+      const idx = chat.length - 1;
+      callAI(text).then(reply => {
+        chat[idx] = { role:"assistant", text: reply, ts: Date.now() };
+        store(KEY_C, chat); renderAssistant();
+      });
+    } else {
+      setTimeout(() => pushMsg("assistant", localAssistant(text)), 200);
+    }
+  }
+
+  function sendAssistant(){
+    const input = $("#chat-input"); const text = input.value.trim();
+    if(!text) return;
+    input.value = "";
+    ask(text);
+  }
+
+  function renderBadge(){
+    const b = $("#ai-badge");
+    if(hasKey()){ b.textContent = "🌿 已接入 DeepSeek AI"; b.className = "assistant-badge on"; }
+    else { b.textContent = "🌿 本地智能模式 · 未接入 AI"; b.className = "assistant-badge"; }
+  }
+
+  /* ---------- 陪伴 ---------- */
+  const COMFORTS = [
+    "妈妈，您这一辈子都在为别人操心，现在换我们来疼您了。",
+    "身体不舒服别硬扛，随时跟我们说，我们都在。",
+    "您今天的样子，是我们心里最踏实的风景。",
+    "慢慢调理，不着急，健康是一天一天养出来的。",
+    "累了就歇一歇，您已经做得足够好了。",
+    "记得多喝温水，您的身体会感谢您的。",
+    "有些话不必说，我们知道您为我们付出过多少。",
+  ];
+  let comfortIdx = load("nuanchao.comfortIdx", 0) || 0;
+
+  function renderComfort(){
+    $("#affirm-q").textContent = "“" + COMFORTS[comfortIdx % COMFORTS.length] + "”";
+    $("#affirm-by").textContent = "—— 给 " + (settings.name||"妈妈") + " 的话";
+    const note = load(KEY_NOTE, "");
+    if(note){ $("#secret-shown").hidden = false; $("#secret-shown").textContent = "💗 " + note; }
+    else { $("#secret-shown").hidden = true; }
+  }
+  $("#affirm-next").addEventListener("click", function(){ comfortIdx++; store("nuanchao.comfortIdx", comfortIdx); renderComfort(); });
+  $("#affirm-mood").addEventListener("click", function(){
+    const rec = getRecord(todayStr());
+    const r = rec.mood ? moodReply(rec.mood) : "无论今天心情如何，先给自己一个微笑。您值得被温柔以待。";
+    $("#affirm-q").textContent = "“" + r + "”";
+    $("#affirm-by").textContent = "—— 听您心情，说给您听";
+  });
+  $("#secret-input").addEventListener("input", function(){ store(KEY_NOTE, this.value.trim()); if(this.value.trim()){ $("#secret-shown").hidden=false; $("#secret-shown").textContent = "💗 " + this.value.trim(); } else { $("#secret-shown").hidden=true; } });
+  $("#secret-input").value = load(KEY_NOTE, "");
+
+  /* ---------- 助手交互 ---------- */
+  $("#quick-chips").addEventListener("click", function(e){
+    const q = e.target.closest("[data-q]"); if(!q) return;
+    ask(q.dataset.q);
+  });
+  $("#chat-send").addEventListener("click", sendAssistant);
+  $("#chat-input").addEventListener("keydown", function(e){ if(e.key === "Enter") sendAssistant(); });
+
+  /* ---------- 标签切换 ---------- */
+  $("#tabbar").addEventListener("click", function(e){
+    const t = e.target.closest(".tab"); if(!t) return;
+    document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x===t));
+    document.querySelectorAll("main section").forEach(s => s.classList.toggle("active", s.dataset.tab === t.dataset.tab));
+    if(t.dataset.tab === "trends") renderTrends();
+    if(t.dataset.tab === "assistant"){ renderAssistant(); renderBadge(); }
+  });
+
+  /* ---------- 自定义饮食 & 使用指南 ---------- */
+  function addCustomFood(){
+    const input = $("#food-custom"); const v = input.value.trim();
+    if(!v) return;
+    const rec = getRecord(todayStr());
+    const arr = rec.diet.foods || [];
+    if(!arr.includes(v)) arr.push(v);
+    rec.diet.foods = arr;
+    input.value = "";
+    saveRecords(); renderLog(); renderTrends(); refreshDailyMsg();
+    toast("已添加「"+v+"」");
+  }
+  $("#food-add").addEventListener("click", addCustomFood);
+  $("#food-custom").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); addCustomFood(); } });
+
+  if(!load("nuanchao.seenGuide", false)) $("#guide").hidden = false;
+  $("#guide-close").addEventListener("click", function(){ $("#guide").hidden = true; store("nuanchao.seenGuide", true); });
+  $("#guide-open").addEventListener("click", function(){ $("#guide").hidden = false; });
+
+  /* ---------- 顶部问候 ---------- */
+  function renderHeader(){
+    const h = new Date().getHours();
+    const g = h<5 ? "夜深了" : h<9 ? "早上好" : h<12 ? "上午好" : h<14 ? "中午好" : h<18 ? "下午好" : "晚上好";
+    $("#greet").textContent = g + "，" + (settings.name||"妈妈");
+    const y = todayStr().slice(0,4), m = todayStr().slice(5,7), d = todayStr().slice(8,10);
+    $("#dateLine").textContent = y + " 年 " + (+m) + " 月 " + (+d) + " 日 · 周" + weekday(todayStr());
+  }
+
+  /* ---------- toast ---------- */
+  let toastTimer;
+  function toast(msg){
+    const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 1300);
+  }
+
+  /* ---------- init ---------- */
+  renderHeader(); renderLog(); renderComfort(); renderBadge();
+  $("#api-key").value = settings.apiKey || "";
+  $("#api-key").addEventListener("change", function(){ settings.apiKey = this.value.trim(); store(KEY_S, settings); renderBadge(); });
+  $("#profile-input").value = settings.profile || "";
+  $("#profile-input").addEventListener("input", function(){ settings.profile = this.value; store(KEY_S, settings); });
+})();
+</script>
